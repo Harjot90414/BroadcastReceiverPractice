@@ -1,21 +1,25 @@
 package com.harjot.broadcastreceiverpractice
 
+import android.app.Dialog
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import com.harjot.broadcastreceiverpractice.databinding.AirplaneModeDialogBinding
 
 class MainActivity : AppCompatActivity(),BcrInterface {
     lateinit var aeroplaneMode: AeroplaneMode
     lateinit var internetCheck: InternetCheck
-    lateinit var alertDialog: AlertDialog.Builder
+    lateinit var dialog : Dialog
+    lateinit var dialogBinding : AirplaneModeDialogBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        alertDialog = AlertDialog.Builder(this)
+        dialog = Dialog(this)
         aeroplaneMode = AeroplaneMode()
         internetCheck = InternetCheck()
         internetCheck.initializeInterface(this)
@@ -26,15 +30,17 @@ class MainActivity : AppCompatActivity(),BcrInterface {
     }
     override fun OnAeroplaneMode(isAirplaneModeEnabled: Boolean) {
         if(isAirplaneModeEnabled){
-            alertDialog.setTitle("Airplane Mode")
-            alertDialog.setMessage("Please Turn off your Airplane Mode")
-            alertDialog.setCancelable(false)
-            alertDialog.setPositiveButton("Done"){_,_->
-             alertDialog.setCancelable(false)
-            }
-            alertDialog.show()
+           dialogBinding = AirplaneModeDialogBinding.inflate(layoutInflater)
+            dialog.setContentView(dialogBinding.root)
+            dialog.window?.setLayout(
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.WRAP_CONTENT
+            )
+            dialog.setCancelable(false)
+            dialog.show()
         }
         else{
+            dialog.dismiss()
             System.out.println("in mode else $isAirplaneModeEnabled")
         }
     }

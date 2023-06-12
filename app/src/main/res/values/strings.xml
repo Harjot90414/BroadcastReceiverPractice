@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Broadcast Receiver Practice</string>
+    <string name="AeroplaneMode">Aeroplane Mode</string>
+    <string name="OffAeroplaneMode">Please turn off your mobile Aeroplane Mode</string>
 </resources>
